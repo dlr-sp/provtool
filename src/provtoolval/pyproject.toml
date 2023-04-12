@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools==62.3.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "provtoolval"
+description = "Framework for validation of provenance containers"
+version = "0.1.0"
+authors = [
+    { name = "Frank Dressel"}
+]
+dependencies = [
+  "provtoolutils==0.16.4",
+  "pandas==1.4.2"
+]
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/dlr-sp/provtool"
+
+[project.optional-dependencies]
+dev = [
+  "tox"
+]
+
+[tool.setuptools]
+packages = [ "provtoolval" ]

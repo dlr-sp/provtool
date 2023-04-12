@@ -1,0 +1,9 @@
+micronaut:
+  application:
+    name: flatfileindexing
+netty:
+  default:
+    allocator:
+      max-order: 3
+flatfileindexing:
+  watchdir: ${watchdir:src/main/resources/testdata}

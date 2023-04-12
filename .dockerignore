@@ -1,0 +1,14 @@
+**/build
+**/dist
+**/report.xml
+**/venv
+
+**/*.db
+**/*.log
+
+**/.pytest_cache
+**/.tox
+
+**/__pycache__
+
+**/*egg-info

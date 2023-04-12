@@ -1,0 +1,26 @@
+#!/bin/bash                                                                                         
+                                                                                                    
+utils_version=$(grep -o -P "(?<=version = \").*(?=\")" src/provtoolutils/pyproject.toml)
+localcontainer_version=$(grep -o -P "(?<=version = \").*(?=\")" src/provtoolutils_localcontainerreader/pyproject.toml)
+validation_version=$(grep -o -P "(?<=version = \").*(?=\")" src/provtoolval/pyproject.toml)
+vis_version=$(grep -o -P "(?<=version = \").*(?=\")" src/provtoolvis/pyproject.toml)
+                                                                                                    
+git tag -l | grep "provtoolutils_$utils_version" > /dev/null
+if [ $? -ne 0 ] ; then                             
+  git tag -a provtoolutils_$utils_version -m "New provtoolutils release"                            
+fi                                                                                                  
+
+git tag -l | grep "provtoolutils_localcontainerreader_$localcontainer_version" > /dev/null
+if [ $? -ne 0 ] ; then                             
+  git tag -a provtoolutils_localcontainerreader_$localcontainer_version -m "New localcontainerreader release"                            
+fi                                                                                                  
+                                                                                                    
+git tag -l | grep "provtoolval_$validation_version" > /dev/null
+if [ $? -ne 0 ] ; then                          
+  git tag -a provtoolval_$validation_version -m "New provtoolval release"                           
+fi                                                                                                  
+                                                                                                    
+git tag -l | grep "provtoolvis_$vis_version" > /dev/null
+if [ $? -ne 0 ] ; then                                 
+  git tag -a provtoolvis_$vis_version -m "New provtoolvis release"                                  
+fi 

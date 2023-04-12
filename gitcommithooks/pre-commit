@@ -1,0 +1,40 @@
+#!/bin/bash
+ 
+utils_version=$(grep -o -P "(?<=version = \").*(?=\")" src/provtoolutils/pyproject.toml)
+localcontainer_version=$(grep -o -P "(?<=version = \").*(?=\")" src/provtoolutils_localcontainerreader/pyproject.toml)
+validation_version=$(grep -o -P "(?<=version = \").*(?=\")" src/provtoolval/pyproject.toml)
+vis_version=$(grep -o -P "(?<=version = \").*(?=\")" src/provtoolvis/pyproject.toml)
+ 
+git tag -l | grep "provtoolutils_$utils_version" > /dev/null
+if [ $? -ne 0 ] ; then
+  sed -i -e "s/provtoolutils_[0-9]\+\.[0-9]\+\.[0-9]\+#egg=provtoolutils\&subdirectory=src\/provtoolutils/provtoolutils_$utils_version#egg=provtoolutils\&subdirectory=src\/provtoolutils/g" src/provtoolutils/README.md
+  git add src/provtoolutils/README.md
+  sed -i -e "s/\"provtoolutils==.*\"/\"provtoolutils==$utils_version\"/g" src/provtoolutils_localcontainerreader/pyproject.toml
+  git add src/provtoolutils_localcontainerreader/pyproject.toml
+  sed -i -e "s/\"provtoolutils==.*\"/\"provtoolutils==$utils_version\"/g" src/provtoolval/pyproject.toml
+  git add src/provtoolval/pyproject.toml
+  sed -i -e "s/\"provtoolutils==.*\"/\"provtoolutils==$utils_version\"/g" src/provtoolvis/pyproject.toml
+  git add src/provtoolvis/pyproject.toml
+fi
+
+git tag -l | grep "provtoolval_$validation_version" > /dev/null
+if [ $? -ne 0 ] ; then
+  sed -i -e "s/provtoolval_[0-9]\+\.[0-9]\+\.[0-9]\+#egg=provtoolval\&subdirectory=src\/validation/provtoolval_$validation_version#egg=provtoolval\&subdirectory=src\/validation/g" src/provtoolval/README.md
+  git add src/provtoolval/README.md
+fi
+
+git tag -l | grep "provtoolutils_localcontainerreader_$localcontainer_version=" > /dev/null
+if [ $? -ne 0 ] ; then
+  sed -i -e "s/provtoolutils_localcontainerreader_[0-9]\+\.[0-9]\+\.[0-9]\+#egg=provtoolutils_localcontainerreader\&subdirectory=src\/localcontainer/provtoolutils_localcontainerreader_$utils_version#egg=provtoolutils_localcontainerreader\&subdirectory=src\/localcontainer/g" src/provtoolutils_localcontainerreader/README.md
+  git add src/provtoolutils_localcontainerreader/README.md
+fi
+
+git tag -l | grep "provtoolvis_$vis_version" > /dev/null
+if [ $? -ne 0 ] ; then
+  sed -i -e "s/provtoolvis_[0-9]\+\.[0-9]\+\.[0-9]\+#egg=provtoolvis\&subdirectory=src\/vis/provtoolvis_$vis_version#egg=provtoolvis\&subdirectory=src\/vis/g" src/provtoolvis/README.md
+  git add src/provtoolvis/README.md
+fi
+
+bom=$(find src/ -iname pyproject.toml -exec grep --no-filename -Pzo "(?<=dependencies = \[\n)[^][]*(?=])" {} \; | tr -d "," | tr -d '\000' | tr -d [:blank:] | sort | uniq | tr -d [:cntrl:] | sed "s/\"\"/\"|\\\\n\"/g" | sed "s/^/|/g" | sed "s/$/|/g")
+sed -i -z -E "s/\n### Generated BoM[^#]*/\n### Generated BoM\n\n|Library|\n|-------|\n${bom}\n\n/g" README.md
+git add README.md

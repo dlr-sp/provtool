@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Validation report</title>
+    <meta name="description" content="Validation report">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <script>
+      let sorting_status = {}
+      function sort(element_index) {
+          sorting_status[element_index] = sorting_status[element_index] == 'up' ? 'down' : 'up';
+          var table, rows, switching, i, x, y, shouldSwitch;
+          table = document.getElementById('validation_table');
+          switching = true;
+          while (switching) {
+              switching = false;
+              rows = table.rows;
+              for (i = 1; i < (rows.length - 1); i++) {
+                  shouldSwitch = false;
+                  x = rows[i].getElementsByTagName('td')[element_index];
+                  y = rows[i + 1].getElementsByTagName('td')[element_index];
+                  if (sorting_status[element_index] == 'up' && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                      shouldSwitch = true;
+                      break;
+                  }
+                  if (sorting_status[element_index] == 'down' && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                      shouldSwitch = true;
+                      break;
+                  }
+              }
+              if (shouldSwitch) {
+                  rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                  switching = true;
+              }
+          }
+      }
+    </script>
+    <table id="validation_table" class="table">
+      <thead id="validation_table_head" class="thead-dark">
+        <tr><th>Entity</th><th onclick="sort(1)">Name</th><th onclick="sort(2)">Data</th><th onclick="sort(3)">Valid</th><th onclick="sort(4)">Used by</th><th onclick="sort(5)">Activity</th><th onclick="sort(7)">Start time</th><th onclick="sort(8)">End time</th></tr>
+      </thead>
+      <tbody id="validation_table_body">
+<tr><td>1234</td><td>abc123</td><td>Test1.txt</td><td>True</td><td>5678<br>9012</td><td>Test1</td><td>2020-11-18T20:19:00+01:00</td><td>2020-11-18T20:20:00+01:00</td></tr>
+<tr><td>5678</td><td>def567</td><td>Test2.txt</td><td>True</td><td></td><td>Test2</td><td>2020-11-18T20:19:00+01:00</td><td>2020-11-18T20:20:00+01:00</td></tr>
+<tr><td>5678</td><td>def567</td><td>Test2.txt</td><td>True</td><td>ERROR</td><td>Test3</td><td>2020-11-18T20:19:00+01:00</td><td>2020-11-18T20:20:00+01:00</td></tr>
+      </tbody>
+    </table>
+  </body>
+</html>

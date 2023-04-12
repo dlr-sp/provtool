@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools==62.3.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "provtoolvis"
+description = "Functions for visualising provenance informations"
+version = "0.11.1"
+authors = [
+    { name = "Frank Dressel"}
+]
+dependencies = [
+  "jsonschema==4.6.0",
+  "matplotlib==3.5.2",
+  "provtoolutils==0.16.4"
+]
+requires-python = ">=3.7"
+
+[project.urls]
+Homepage = "https://github.com/dlr-sp/provtool"
+
+[project.optional-dependencies]
+dev = [
+  "tox"
+]
+
+[tool.setuptools]
+packages = [ "provtoolvis" ]
