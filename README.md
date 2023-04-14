@@ -1,10 +1,8 @@
 # Provtool
 
-[[_TOC_]]
-
 ## Software bill of materials
 
-See pyproject.toml in the src sub folders. Additionally, the BoM should be automatically added to the README via a git commit hook (see [Development](#development).
+See pyproject.toml in the src sub folders. Additionally, the BoM should be automatically added to the README via a git commit hook (see [Development](#development)).
 
 ### Generated BoM
 
